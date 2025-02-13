@@ -3,40 +3,42 @@ package com.example.authentication.ui.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
+// Dark Theme Colors
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Color(0xFF800080),
+    primaryContainer = Color(0xFF700070),
+    secondary = Color(0xFF600060),
+    tertiary = Color(0xFF500050),
+    background = Color(0xFF100010),
+    surface = Color(0xFF1B001B),
+    onPrimary = Color(0xFFFFFFFF),
+    onSecondary = Color(0xFFF6EDF6),
+    onBackground = Color(0xFFEDDDDD),
+    onSurface = Color(0xFFCA97CA)
 )
 
+// Light Theme Colors
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = Color(0xFF800080),
+    primaryContainer = Color(0xFF993399),
+    secondary = Color(0xFFAD5CAD),
+    tertiary = Color(0xFFBD7DBD),
+    background = Color(0xFFFFFFFF),
+    surface = Color(0xFFF6EDF6),
+    onPrimary = Color(0xFF000000),
+    onSecondary = Color(0xFF200020),
+    onBackground = Color(0xFF400040),
+    onSurface = Color(0xFF600060)
 )
 
 @Composable
 fun AuthenticationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -45,7 +47,6 @@ fun AuthenticationTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }

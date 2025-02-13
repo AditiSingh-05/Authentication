@@ -19,7 +19,8 @@ class MainActivity : ComponentActivity() {
             AuthenticationTheme {
                 val navController = rememberNavController()
                 val authViewModel: AuthViewModel = viewModel()
-                NavGraph(navController, authViewModel = authViewModel)
+                val notesViewModel: NotesViewModel = viewModel()
+                NavGraph(navController, authViewModel = authViewModel,notesViewModel = notesViewModel)
             }
         }
     }

@@ -1,6 +1,9 @@
 package com.example.authentication.screens
 
 import android.widget.Toast
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
@@ -41,6 +48,17 @@ fun LoginScreen(navController: NavController,authViewModel: AuthViewModel){
     val authState = authViewModel.authState.observeAsState()
     val context = LocalContext.current
 
+    var isPressed by remember { mutableStateOf(false) }
+
+    // Adding tween() for smooth animation
+    val scaleValue by animateFloatAsState(
+        targetValue = if (isPressed) 0.95f else 1f,
+        animationSpec = tween(durationMillis = 150), // Animation duration
+        label = "buttonScale"
+    )
+
+
+
     LaunchedEffect(authState.value) {
         when(authState.value){
             is AuthState.Authenticated -> navController.navigate(AppScreens.HomeScreen.route)
@@ -49,9 +67,16 @@ fun LoginScreen(navController: NavController,authViewModel: AuthViewModel){
             else -> Unit
         }
     }
+
+    val colors = MaterialTheme.colorScheme
+    val gradientBrush = Brush.verticalGradient(
+        colors = listOf(colors.background,colors.primaryContainer)
+    )
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(gradientBrush)
+        ,
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -60,7 +85,8 @@ fun LoginScreen(navController: NavController,authViewModel: AuthViewModel){
             "Login",
             fontFamily = FontFamily.Serif,
             fontSize = 70.sp,
-            fontWeight = FontWeight.ExtraBold
+            fontWeight = FontWeight.ExtraBold,
+            color = colors.onBackground
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -71,9 +97,15 @@ fun LoginScreen(navController: NavController,authViewModel: AuthViewModel){
                 email = it
             },
             label = {
-                Text("Email")
+                Text("Email",color = colors.onSurface)
             },
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(16.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = colors.primary,
+                unfocusedBorderColor = colors.onSecondary,
+                cursorColor = colors.primary,
+                focusedLabelColor = colors.primary
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -84,23 +116,37 @@ fun LoginScreen(navController: NavController,authViewModel: AuthViewModel){
                 password = it
             },
             label = {
-                Text("Password")
+                Text("Password",color = colors.onSurface)
             },
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(16.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = colors.primary,
+                unfocusedBorderColor = colors.onSecondary,
+                cursorColor = colors.primary,
+                focusedLabelColor = colors.primary
+            )
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
+                isPressed = true
                 authViewModel.login(email,password)
 
             },
             enabled = authState.value != AuthState.Loading
             ,
-            modifier = Modifier.height(54.dp).width(280.dp)
+            modifier = Modifier.height(54.dp).width(280.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = colors.primary)
+
         ) {
-            Text("Sign up")
+            Text("Login ",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color =  colors.onPrimary
+
+            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -108,12 +154,15 @@ fun LoginScreen(navController: NavController,authViewModel: AuthViewModel){
 
         Row(
         ) {
-            Text("Don't have an account? ")
+            Text("Don't have an account? ",
+                color = colors.onSurface
+                )
             Text("Sign Up",
                 modifier = Modifier.clickable {
                     navController.navigate(AppScreens.SignupScreen.route)
                 },
-                color = Color.Blue
+                color = colors.primary,
+                fontWeight = FontWeight.Bold
             )
         }
 

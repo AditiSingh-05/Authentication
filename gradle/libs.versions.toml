@@ -17,7 +17,8 @@ firebaseAuthKtx = "23.2.0"
 firebaseFirestoreKtx = "25.1.2"
 runtimeLivedata = "1.7.7"
 googleGmsGoogleServices = "4.3.15"
-runtimeLivedataVersion = "1.7.7" # ✅ Added missing Google Services Plugin
+runtimeLivedataVersion = "1.7.7"
+firebaseFirestore = "25.1.2" # ✅ Added missing Google Services Plugin
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +39,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuthKtx" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedataVersion" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

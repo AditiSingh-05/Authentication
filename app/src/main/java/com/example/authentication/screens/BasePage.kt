@@ -26,7 +26,8 @@ fun BasePage(
     title: String,
     content: @Composable () -> Unit,
     fab: (@Composable () -> Unit)? = null,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    topBarActions: @Composable () -> Unit = {}
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -42,20 +43,46 @@ fun BasePage(
                 drawerContainerColor = colors.primaryContainer
             ) {
                 LazyColumn {
-                    item {
-                        Card(
-                            modifier = Modifier.fillMaxSize()
-                                .padding(16.dp)
-                                .height(120.dp),
-                            colors = CardDefaults.cardColors(containerColor = colors.secondary)
-                        ) {
-                            DrawerOption(title = "", color = colors.onSecondary) {
-                                scope.launch { drawerState.close() }
-                                navController.navigate(AppScreens.LoginScreen.route)
-                            }
+//                    item {
+//                        Card(
+//                            modifier = Modifier.fillMaxSize()
+//                                .padding(16.dp)
+//                                .height(120.dp),
+//                            colors = CardDefaults.cardColors(containerColor = colors.secondary)
+//                        ) {
+//                            DrawerOption(title = "", color = colors.onSecondary) {
+//                                scope.launch { drawerState.close() }
+//                                navController.navigate(AppScreens.LoginScreen.route)
+//                            }
+//                        }
+//                    }
+
+                    item{
+//                        Divider(color = colors.onSurface, thickness = 1.dp)
+                        DrawerOption(title = "Profile", color = colors.onPrimaryContainer) {
+                            scope.launch { drawerState.close() }
                         }
                     }
 
+                    item{
+                        Divider(color = colors.onSurface, thickness = 1.dp)
+                        DrawerOption(title = "Theme", color = colors.onPrimaryContainer) {
+                            scope.launch { drawerState.close() }
+                        }
+                    }
+                    item{
+                        Divider(color = colors.onSurface, thickness = 1.dp)
+                        DrawerOption(title = "Settings", color = colors.onPrimaryContainer) {
+                            scope.launch { drawerState.close() }
+                        }
+                    }
+
+                    item{
+                        Divider(color = colors.onSurface, thickness = 1.dp)
+                        DrawerOption(title = "Privacy Policy", color = colors.onPrimaryContainer) {
+                            scope.launch { drawerState.close() }
+                        }
+                    }
 
                     item {
                         Divider(color = colors.onSurface, thickness = 1.dp)
@@ -70,6 +97,7 @@ fun BasePage(
                             }
                         }
                     }
+
                 }
             }
         }
@@ -81,6 +109,9 @@ fun BasePage(
                     colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = colors.primaryContainer
                     ),
+                    actions = {topBarActions?.invoke()}
+                    ,
+
                     navigationIcon = {
                         IconButton(onClick = { scope.launch { drawerState.open() } }) {
                             Icon(
@@ -108,7 +139,7 @@ fun DrawerOption(title: String, color: androidx.compose.ui.graphics.Color, onIte
     Text(
         text = title,
         modifier = Modifier
-            .padding(16.dp)
+            .padding(24.dp)
             .clickable { onItemClick() },
         fontSize = 24.sp,
         color = colors.onPrimaryContainer

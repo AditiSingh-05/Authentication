@@ -87,7 +87,8 @@ fun AddNoteScreen(navController: NavController,notesViewModel: NotesViewModel){
                 ),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
             BasicTextField(

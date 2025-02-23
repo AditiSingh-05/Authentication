@@ -8,6 +8,9 @@ import com.google.firebase.auth.FirebaseAuth
 class AuthViewModel : ViewModel() {
 
     private val auth : FirebaseAuth = FirebaseAuth.getInstance()
+    fun isUserLoggedIn(): Boolean {
+        return auth.currentUser != null
+    }
 
     private val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState> = _authState

@@ -20,7 +20,8 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val authViewModel: AuthViewModel = viewModel()
                 val notesViewModel: NotesViewModel = viewModel()
-                NavGraph(navController, authViewModel = authViewModel,notesViewModel = notesViewModel)
+                val isHidden = false
+                NavGraph(navController, authViewModel = authViewModel,notesViewModel = notesViewModel, isHidden = isHidden)
             }
         }
     }

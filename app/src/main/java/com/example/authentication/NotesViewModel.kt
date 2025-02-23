@@ -7,14 +7,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
-data class Note(val id: String = "", val title: String = "", val content: String = "")
+data class Note(var id: String = "", val title: String = "", val content: String = "",val isHidden: Boolean = false)
 
 class NotesViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
     private val firestore = FirebaseFirestore.getInstance()
 
     private val _notes = MutableLiveData<List<Note>>()
-    val notes: LiveData<List<Note>> = _notes
+    val notes: LiveData<List<Note>> get()= _notes
 
 
 
@@ -29,6 +29,7 @@ class NotesViewModel : ViewModel() {
                             id = doc.id,
                             title = doc.getString("title") ?: "",
                             content = doc.getString("content") ?: "",
+                            isHidden = doc.getBoolean("isHidden") ?: false
                         )
                     }
                     _notes.value = noteList
@@ -68,6 +69,20 @@ class NotesViewModel : ViewModel() {
         noteLiveData.value = _notes.value?.find { it.id == noteId }
         return noteLiveData
     }
+
+    fun toggleHiddenStatus(noteId: String, hide: Boolean) {
+        val userId = auth.currentUser?.uid ?: return
+
+        firestore.collection("users").document(userId).collection("notes")
+            .document(noteId)
+            .update("isHidden", hide)
+
+        val updatedNotes = _notes.value?.map { note ->
+            if (note.id == noteId) note.copy(isHidden = hide) else note
+        }
+        _notes.value = updatedNotes ?: emptyList()
+    }
+
 
 
 

@@ -74,7 +74,7 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
     //
     val colors = MaterialTheme.colorScheme
     val gradientBrush = Brush.verticalGradient(
-        colors = listOf(colors.background,colors.primaryContainer)
+        colors = listOf(colors.secondary,colors.secondaryContainer)
     )
     //
 
@@ -92,7 +92,7 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
             fontFamily = FontFamily.Serif,
             fontSize = 70.sp,
             fontWeight = FontWeight.ExtraBold,
-            color = colors.onBackground
+            color = colors.onSecondary
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -103,14 +103,14 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
                 email = it
             },
             label = {
-                Text("Email",color = colors.onSurface)
+                Text("Email",color = colors.onSecondary)
             },
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = colors.primary,
+                focusedBorderColor = colors.tertiary,
                 unfocusedBorderColor = colors.onSecondary,
-                cursorColor = colors.primary,
-                focusedLabelColor = colors.primary
+                cursorColor = colors.onSecondary,
+                focusedLabelColor = colors.onSecondary
             )
 
         )
@@ -123,14 +123,14 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
                 password = it
             },
             label = {
-                Text("Password",color = colors.onSurface)
+                Text("Password",color = colors.onSecondary)
             },
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = colors.primary,
+                focusedBorderColor = colors.tertiary,
                 unfocusedBorderColor = colors.onSecondary,
-                cursorColor = colors.primary,
-                focusedLabelColor = colors.primary
+                cursorColor = colors.onSecondary,
+                focusedLabelColor = colors.onSecondary
             )
         )
 
@@ -144,13 +144,13 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
             },
             enabled = authState.value != AuthState.Loading,
             modifier = Modifier.height(54.dp).width(280.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = colors.primary)
+            colors = ButtonDefaults.buttonColors(containerColor = colors.tertiary)
 
         ) {
             Text("Sign up",
             fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color =  colors.onPrimary
+                color =  colors.onSecondary
             )
         }
 
@@ -160,13 +160,13 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
         Row(
         ) {
             Text("Already have an account? ",
-            color = colors.onSurface
+            color = colors.onSecondary
             )
             Text("Login",
                 modifier = Modifier.clickable {
                     navController.navigate(AppScreens.LoginScreen.route)
                 },
-                color = colors.primary,
+                color = colors.tertiary,
                 fontWeight = FontWeight.Bold
             )
         }

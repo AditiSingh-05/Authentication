@@ -21,15 +21,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.example.authentication.NotesViewModel
@@ -43,19 +46,33 @@ import com.example.authentication.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddNoteScreen(navController: NavController,notesViewModel: NotesViewModel){
-    var title by remember {mutableStateOf("")}
+fun AddNoteScreen(navController: NavController, notesViewModel: NotesViewModel) {
+    var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
+    val colors = MaterialTheme.colorScheme
+
     val keyboardController = LocalSoftwareKeyboardController.current
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Add Note") },
+                title = {
+                    Text(
+                        "Add Note",
+                        color = colors.onTertiary,
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = colors.onTertiary
+                        )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = colors.tertiary
+                )
             )
         },
         floatingActionButton = {
@@ -66,29 +83,36 @@ fun AddNoteScreen(navController: NavController,notesViewModel: NotesViewModel){
                         navController.navigate(AppScreens.HomeScreen.route)
                     }
                 },
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = MaterialTheme.colorScheme.tertiary
             ) {
                 Icon(imageVector = Icons.Default.Check, contentDescription = "Save Note")
             }
         }
-    ){ScreenPadding ->
+    ) { ScreenPadding ->
         Column(
-            modifier = Modifier.padding(ScreenPadding)
+            modifier = Modifier
+                .padding(ScreenPadding)
                 .fillMaxSize()
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center
-        ){
+        ) {
             OutlinedTextField(
                 value = title,
-                onValueChange = {title = it},
-                label = {Text("Title")},
+                onValueChange = { title = it },
+                label = { Text("Title") },
                 textStyle = TextStyle(
                     fontSize = 20.sp
                 ),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp)
+                shape = RoundedCornerShape(16.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = colors.tertiary,
+                    unfocusedBorderColor = colors.onSecondary,
+                    cursorColor = colors.onSecondary,
+                    focusedLabelColor = colors.onSecondary
+                )
             )
             Spacer(modifier = Modifier.height(12.dp))
             BasicTextField(
@@ -98,9 +122,11 @@ fun AddNoteScreen(navController: NavController,notesViewModel: NotesViewModel){
                 keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.LightGray.copy(alpha = 0.2f), RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(colors.secondary)
                     .padding(12.dp)
             )
+
 
         }
 

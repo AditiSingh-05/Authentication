@@ -10,15 +10,17 @@ import com.example.authentication.screens.EditNoteScreen
 import com.example.authentication.screens.HiddenNotesScreen
 import com.example.authentication.screens.HomeScreen
 import com.example.authentication.screens.LoginScreen
+import com.example.authentication.screens.SetPinScreen
 import com.example.authentication.screens.SettingsScreen
 import com.example.authentication.screens.SignupScreen
 import com.example.authentication.screens.SplashScreen
+import com.example.authentication.screens.VerifyPinScreen
 import com.example.authentication.screens.ViewNoteScreen
 import np.com.bimalkafle.firebaseauthdemoapp.AuthViewModel
 
 @Composable
 
-fun NavGraph(navController: NavController,authViewModel: AuthViewModel,notesViewModel: NotesViewModel,isHidden : Boolean){
+fun NavGraph(navController: NavController,authViewModel: AuthViewModel,notesViewModel: NotesViewModel,isHidden : Boolean,pinViewModel: PinViewModel){
     val navController = rememberNavController()
 
     val startDestination = if (authViewModel.isUserLoggedIn() != null) {
@@ -56,7 +58,13 @@ fun NavGraph(navController: NavController,authViewModel: AuthViewModel,notesView
 
         }
         composable(AppScreens.SettingsScreen.route){
-            SettingsScreen(navController,authViewModel)
+            SettingsScreen(navController,authViewModel, pinViewModel)
+        }
+        composable(AppScreens.VerifyPinScreen.route){
+            VerifyPinScreen(navController,pinViewModel,authViewModel)
+        }
+        composable(AppScreens.SetPinScreen.route){
+            SetPinScreen(navController,pinViewModel,authViewModel)
         }
 
     }

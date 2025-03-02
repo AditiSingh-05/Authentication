@@ -10,7 +10,7 @@ private val DarkColorScheme = darkColorScheme(
     secondary = DarkGray,
     secondaryContainer = MoreDarkGray,
     onSecondary = White,
-    tertiary = DarkOrange,
+    tertiary = DarkBluish,
     onTertiary = White,
     onError = Red
 
@@ -21,7 +21,7 @@ private val LightColorScheme = lightColorScheme(
     secondary = White,
     secondaryContainer = DarkGray,
     onSecondary = Black,
-    tertiary = OrangeYellow,
+    tertiary = Bluish,
     onTertiary = White,
     onError = Red
     )

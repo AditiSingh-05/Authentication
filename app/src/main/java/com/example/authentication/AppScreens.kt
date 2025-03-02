@@ -9,4 +9,6 @@ sealed class AppScreens(val route : String) {
     object SettingsScreen : AppScreens("settingscreen")
     object ViewNoteScreen : AppScreens("viewnotescreen")
     object HiddenNotesScreen : AppScreens("hiddennotescreen")
+    object VerifyPinScreen : AppScreens("verifypinscreen")
+    object SetPinScreen : AppScreens("setpinscreen")
 }

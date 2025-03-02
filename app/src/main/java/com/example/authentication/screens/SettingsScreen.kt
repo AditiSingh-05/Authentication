@@ -1,5 +1,6 @@
 package com.example.authentication.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -26,14 +27,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.authentication.AppScreens
+import com.example.authentication.PinViewModel
 import np.com.bimalkafle.firebaseauthdemoapp.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(navController: NavController,authViewModel: AuthViewModel) {
+fun SettingsScreen(navController: NavController,authViewModel: AuthViewModel,pinViewModel: PinViewModel) {
     val colors = MaterialTheme.colorScheme
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -65,14 +69,15 @@ fun SettingsScreen(navController: NavController,authViewModel: AuthViewModel) {
         }
     ) { ScreenPadding ->
         Column(
-            modifier = Modifier.padding(ScreenPadding)
+            modifier = Modifier
+                .padding(ScreenPadding)
                 .background(
                     color = colors.secondary
                 ),
 
 
 
-        ) {
+            ) {
             Divider(thickness = 3.dp,
                 color = colors.primary)
             Box(
@@ -118,14 +123,22 @@ fun SettingsScreen(navController: NavController,authViewModel: AuthViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        navController.navigate(AppScreens.HiddenNotesScreen.route)
+                        pinViewModel.ifPinExists { exists ->
+                            val message = if (exists) {
+                                navController.navigate((AppScreens.VerifyPinScreen.route))
+                            } else {
+                                navController.navigate((AppScreens.SetPinScreen.route))
+                            }
+
+                        }
                     }
                     .height(56.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
                 Text(
                     "Hidden Notes", //can add touch actions laterr
-                    modifier = Modifier.padding(start = 28.dp),
+                    modifier = Modifier.padding(start = 28.dp)
+                    ,
                     fontSize = 24.sp
                 )
 

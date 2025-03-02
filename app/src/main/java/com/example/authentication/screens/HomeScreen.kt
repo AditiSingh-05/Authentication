@@ -204,7 +204,7 @@ fun NoteItem(
                         offsetX = 0f
                     },
                     onHorizontalDrag = {
-                        _,dragAmount ->
+                            _,dragAmount ->
                         offsetX += dragAmount
                     }
                 )

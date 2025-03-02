@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -27,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.authentication.AppScreens
 import com.example.authentication.PinViewModel
@@ -84,13 +81,13 @@ fun SettingsScreen(navController: NavController,authViewModel: AuthViewModel,pin
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-
+                        navController.navigate(AppScreens.UserProfileScreen.route)
                     }
                     .height(56.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
                 Text(
-                    "Account",
+                    "Profile",
                     modifier = Modifier.padding(start = 28.dp),
                     fontSize = 24.sp,
                     color = colors.onSecondary
@@ -105,7 +102,7 @@ fun SettingsScreen(navController: NavController,authViewModel: AuthViewModel,pin
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-
+                        navController.navigate(AppScreens.CustomizeThemeScreen.route)
                     }
                     .height(56.dp),
                 contentAlignment = Alignment.CenterStart
@@ -136,7 +133,7 @@ fun SettingsScreen(navController: NavController,authViewModel: AuthViewModel,pin
                 contentAlignment = Alignment.CenterStart
             ) {
                 Text(
-                    "Hidden Notes", //can add touch actions laterr
+                    "Hidden Notes",
                     modifier = Modifier.padding(start = 28.dp)
                     ,
                     fontSize = 24.sp
@@ -149,7 +146,7 @@ fun SettingsScreen(navController: NavController,authViewModel: AuthViewModel,pin
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-
+                        navController.navigate(AppScreens.PrivacyPolicyScreen.route)
                     }
                     .height(56.dp),
                 contentAlignment = Alignment.CenterStart

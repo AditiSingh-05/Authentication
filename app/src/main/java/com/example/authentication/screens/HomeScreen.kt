@@ -9,6 +9,7 @@ import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
@@ -130,7 +131,8 @@ fun HomeScreen(navController: NavController, notesViewModel: NotesViewModel, aut
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { navController.navigate(AppScreens.AddNoteScreen.route) },
-                containerColor = colors.tertiary
+                containerColor = colors.tertiary,
+                shape = CircleShape,
             ) {
                 Text("+", fontSize = 40.sp, color = colors.onTertiary)
             }

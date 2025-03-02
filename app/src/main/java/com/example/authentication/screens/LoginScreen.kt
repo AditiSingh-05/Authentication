@@ -1,38 +1,21 @@
-package com.example.authentication.screens
-
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -40,52 +23,46 @@ import com.example.authentication.AppScreens
 import np.com.bimalkafle.firebaseauthdemoapp.AuthState
 import np.com.bimalkafle.firebaseauthdemoapp.AuthViewModel
 
+
 @Composable
-fun LoginScreen(navController: NavController,authViewModel: AuthViewModel){
+fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
 
-    val authState = authViewModel.authState.observeAsState()
+    val authState by authViewModel.authState.observeAsState()
     val context = LocalContext.current
 
-    var isPressed by remember { mutableStateOf(false) }
-
-    // Adding tween() for smooth animation
-    val scaleValue by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
-        animationSpec = tween(durationMillis = 150), // Animation duration
-        label = "buttonScale"
+    val colors = MaterialTheme.colorScheme
+    val gradientBrush = Brush.verticalGradient(
+        colors = listOf(colors.secondary, colors.secondaryContainer)
     )
 
-
-
-    LaunchedEffect(authState.value) {
-        when(authState.value){
+    LaunchedEffect(authState) {
+        when (authState) {
             is AuthState.Authenticated -> navController.navigate(AppScreens.HomeScreen.route)
-            is AuthState.Error -> Toast.makeText(context,
-                (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+            is AuthState.Error -> Toast.makeText(
+                context,
+                (authState as AuthState.Error).message,
+                Toast.LENGTH_SHORT
+            ).show()
+
             else -> Unit
         }
     }
 
-    val colors = MaterialTheme.colorScheme
-    val gradientBrush = Brush.verticalGradient(
-        colors = listOf(colors.secondary,colors.secondaryContainer)
-    )
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(gradientBrush)
-        ,
+        modifier = Modifier.fillMaxSize().background(gradientBrush),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(80.dp))
+
         Text(
             "Login",
             fontFamily = FontFamily.Serif,
-            fontSize = 70.sp,
-            fontWeight = FontWeight.ExtraBold,
+            fontSize = 50.sp,
+            fontWeight = FontWeight.Bold,
             color = colors.onSecondary
         )
 
@@ -93,18 +70,12 @@ fun LoginScreen(navController: NavController,authViewModel: AuthViewModel){
 
         OutlinedTextField(
             value = email,
-            onValueChange = {
-                email = it
-            },
-            label = {
-                Text("Email",color = colors.onSecondary)
-            },
+            onValueChange = { email = it },
+            label = { Text("Email", color = colors.onSecondary) },
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = colors.tertiary,
-                unfocusedBorderColor = colors.onSecondary,
-                cursorColor = colors.onSecondary,
-                focusedLabelColor = colors.onSecondary
+                unfocusedBorderColor = colors.onSecondary
             )
         )
 
@@ -112,60 +83,48 @@ fun LoginScreen(navController: NavController,authViewModel: AuthViewModel){
 
         OutlinedTextField(
             value = password,
-            onValueChange = {
-                password = it
-            },
-            label = {
-                Text("Password",color = colors.onSecondary)
-            },
+            onValueChange = { password = it },
+            label = { Text("Password", color = colors.onSecondary) },
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = colors.tertiary,
-                unfocusedBorderColor = colors.onSecondary,
-                cursorColor = colors.onSecondary,
-                focusedLabelColor = colors.onSecondary
-            )
+                unfocusedBorderColor = colors.onSecondary
+            ),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                Text(
+                    if (passwordVisible) "Hide" else "Show",
+                    color = colors.tertiary,
+                    modifier = Modifier.clickable { passwordVisible = !passwordVisible }
+                )
+            }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = {
-                isPressed = true
-                authViewModel.login(email,password)
-
-            },
-            enabled = authState.value != AuthState.Loading
-            ,
+            onClick = { authViewModel.login(email, password) },
+            enabled = authState != AuthState.Loading,
             modifier = Modifier.height(54.dp).width(280.dp),
             colors = ButtonDefaults.buttonColors(containerColor = colors.tertiary)
-
         ) {
-            Text("Login ",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color =  colors.onSecondary
-
-            )
+            if (authState == AuthState.Loading) {
+                CircularProgressIndicator(color = colors.onSecondary)
+            } else {
+                Text("Login", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = colors.onSecondary)
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-
-        Row(
-        ) {
-            Text("Don't have an account? ",
-                color = colors.onSecondary
-                )
-            Text("Sign Up",
-                modifier = Modifier.clickable {
-                    navController.navigate(AppScreens.SignupScreen.route)
-                },
+        Row {
+            Text("Don't have an account? ", color = colors.onSecondary)
+            Text(
+                "Sign Up",
+                modifier = Modifier.clickable { navController.navigate(AppScreens.SignupScreen.route) },
                 color = colors.tertiary,
                 fontWeight = FontWeight.Bold
             )
         }
-
-
     }
 }

@@ -15,4 +15,5 @@ sealed class AppScreens(val route : String) {
     object PrivacyPolicyScreen : AppScreens("privacypolicyscreen")
     object UserProfileScreen : AppScreens("userprofilescreen")
     object UserNameScreen : AppScreens("usernamescreen")
+    object ChangePasswordScreen : AppScreens("changepasswordscreen")
 }

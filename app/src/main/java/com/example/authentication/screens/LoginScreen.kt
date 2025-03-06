@@ -20,12 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.authentication.AppScreens
+import com.example.authentication.NameViewModel
 import np.com.bimalkafle.firebaseauthdemoapp.AuthState
 import np.com.bimalkafle.firebaseauthdemoapp.AuthViewModel
 
-
 @Composable
-fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
+fun LoginScreen(navController: NavController, authViewModel: AuthViewModel, nameViewModel: NameViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -40,7 +40,16 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel) {
 
     LaunchedEffect(authState) {
         when (authState) {
-            is AuthState.Authenticated -> navController.navigate(AppScreens.HomeScreen.route)
+            is AuthState.Authenticated -> {
+                nameViewModel.doesUserNameExist { exists ->
+                    if (exists) {
+                        navController.navigate(AppScreens.HomeScreen.route)
+                    } else {
+                        navController.navigate(AppScreens.UserNameScreen.route)
+                    }
+                }
+            }
+
             is AuthState.Error -> Toast.makeText(
                 context,
                 (authState as AuthState.Error).message,

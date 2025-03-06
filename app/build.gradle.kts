@@ -77,6 +77,13 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation ("androidx.core:core-splashscreen:1.0.1")
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("androidx.compose.material3:material3:1.2.0")// Latest version
+
+    implementation ("androidx.compose.material3:material3:1.2.0")
+    implementation ("androidx.compose.material3:material3-window-size-class:1.2.0")
+
+
 
 //    implementation("com.github.amirhwsyn:WPatternLock:5.0.0") //
 

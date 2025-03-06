@@ -50,10 +50,10 @@ class PinViewModel : ViewModel() {
                 val savedPin = documents.getString("pin") ?: ""
                 onResult(enteredPin == savedPin)
             } else {
-                onResult(false) // No PIN found
+                onResult(false)
             }
         }.addOnFailureListener {
-            onResult(false) // Firestore error
+            onResult(false)
         }
     }
 

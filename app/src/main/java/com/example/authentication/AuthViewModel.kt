@@ -3,11 +3,14 @@ package np.com.bimalkafle.firebaseauthdemoapp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.authentication.Name
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class AuthViewModel : ViewModel() {
 
-    private val auth : FirebaseAuth = FirebaseAuth.getInstance()
+    val auth : FirebaseAuth = FirebaseAuth.getInstance()
+    private val firestore = FirebaseFirestore.getInstance()
     fun isUserLoggedIn(): Boolean {
         return auth.currentUser != null
     }
@@ -45,7 +48,7 @@ class AuthViewModel : ViewModel() {
                                 _authState.value = AuthState.Authenticated
                             } else {
                                 _authState.value = AuthState.Error("Please verify your email before logging in.")
-                                auth.signOut()  // Prevent login if email is not verified
+                                auth.signOut()
                             }
                         } else {
                             _authState.value = AuthState.Error("Error checking email verification status.")
@@ -68,9 +71,9 @@ class AuthViewModel : ViewModel() {
     }
 
 
-    fun fetchUserEmail(): String? {
-        return auth.currentUser?.email
-    }
+
+
+
 
     fun signup(email: String, password: String) {
         if (email.isEmpty() || password.isEmpty()) {
@@ -101,6 +104,11 @@ class AuthViewModel : ViewModel() {
         auth.signOut()
         _authState.value = AuthState.Unauthenticated
     }
+
+    fun getUserEmail(): String {
+        return auth.currentUser?.email ?: "No email found"
+    }
+
 
 
 }

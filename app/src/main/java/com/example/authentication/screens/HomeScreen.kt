@@ -88,7 +88,7 @@ fun HomeScreen(navController: NavController, notesViewModel: NotesViewModel, aut
                             onClick = {
                                 navController.navigate(AppScreens.SettingsScreen.route)
                             },
-                            modifier = Modifier.padding(end = 8.dp) // Reduce padding to prevent cutoff
+                            modifier = Modifier.padding(end = 8.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Settings,
@@ -163,7 +163,7 @@ fun HomeScreen(navController: NavController, notesViewModel: NotesViewModel, aut
                 }
             } else {
                 LazyColumn {
-                    items(notes.filter { !it.isHidden }) { note -> // Show only unhidden notes
+                    items(notes.filter { !it.isHidden }) { note ->
                         NoteItem(
                             note = note,
                             selectedNotes = selectedNotes,
@@ -178,35 +178,33 @@ fun HomeScreen(navController: NavController, notesViewModel: NotesViewModel, aut
         }
     }
 }
-
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteItem(
     note: Note,
     selectedNotes : MutableList<String>,
     notesViewModel: NotesViewModel,
-    isHidden: Boolean, onEdit: () -> Unit) {
+    isHidden: Boolean, onEdit: () -> Unit
+) {
     val colors = MaterialTheme.colorScheme
     val isSelected = selectedNotes.contains(note.id)
-    var offsetX by remember{ mutableStateOf(0f) }
+    var offsetX by remember { mutableStateOf(0f) }
     val swipeThreshold = 100f
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp,bottom = 8.dp)
+            .padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
             .height(100.dp)
-            .pointerInput(Unit){
+            .pointerInput(Unit) {
                 detectHorizontalDragGestures(
                     onDragEnd = {
-                        if(offsetX < -swipeThreshold){
-                            notesViewModel.toggleHiddenStatus(note.id,!isHidden)
+                        if (offsetX < -swipeThreshold) {
+                            notesViewModel.toggleHiddenStatus(note.id, !isHidden)
                         }
                         offsetX = 0f
                     },
-                    onHorizontalDrag = {
-                            _,dragAmount ->
+                    onHorizontalDrag = { _, dragAmount ->
                         offsetX += dragAmount
                     }
                 )
@@ -220,29 +218,43 @@ fun NoteItem(
                 onLongClick = {
                     if (isSelected) selectedNotes.remove(note.id)
                     else selectedNotes.add(note.id)
-                } //Selection
-            )
-        ,
+                } // Selection
+            ),
         shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(8.dp)
-        ,
+        elevation = CardDefaults.cardElevation(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isSelected) colors.secondary else colors.secondary   //onSelected
-        )    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = note.title,
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleMedium,
-                color = if (isSelected) colors.onSecondary else colors.onSecondary  //onSelected
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = note.content,
-                style = MaterialTheme.typography.bodyMedium,
-                color = if (isSelected) colors.onSecondary else colors.onSecondary //onSelected
+            containerColor = if (isSelected) colors.secondary else colors.surface
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Show radio button when the note is selected
+            if (isSelected) {
+                RadioButton(
+                    selected = true,
+                    onClick = { selectedNotes.remove(note.id) },
+                    modifier = Modifier.padding(end = 8.dp)
+                )
+            }
 
-            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = note.title,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = colors.onSurface
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = note.content,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = colors.onSurface
+                )
+            }
         }
     }
 }

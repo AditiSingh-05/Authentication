@@ -114,7 +114,7 @@ fun SettingsScreen(navController: NavController,authViewModel: AuthViewModel,pin
                 )
 
             }
-            Divider(thickness = 3.dp,
+            Divider(thickness = 2.dp,
                 color = colors.primary)
             Box(
                 modifier = Modifier

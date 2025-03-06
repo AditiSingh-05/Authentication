@@ -71,7 +71,7 @@ fun VerifyPinScreen(navController: NavController,pinViewModel: PinViewModel,auth
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = colors.tertiary,
-                unfocusedBorderColor = colors.onSecondary,
+                unfocusedBorderColor = colors.onPrimary,
                 cursorColor = colors.onSecondary,
                 focusedLabelColor = colors.onSecondary
             )

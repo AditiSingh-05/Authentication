@@ -90,6 +90,7 @@ fun SignupScreen(navController: NavController, authViewModel: AuthViewModel) {
 
         OutlinedTextField(
             value = password,
+            singleLine = true,
             onValueChange = { password = it },
             label = { Text("Password", color = colors.onSecondary) },
             shape = RoundedCornerShape(16.dp),
